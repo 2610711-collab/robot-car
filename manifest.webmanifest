@@ -1,0 +1,17 @@
+{
+  "short_name": "RobotCar",
+  "name": "Robot Car Tactical Dashboard App",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3063/3063822.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#0d0d0f",
+  "theme_color": "#0d0d0f",
+  "display": "standalone",
+  "orientation": "portrait"
+}

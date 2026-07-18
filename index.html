@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Robot Car Tele-Controller</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0d0d0f">
+    <!-- 모바일 PWA 웹앱 구동 지원 Meta -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+
+    <div class="system-bar">
+        <div class="system-title">ROBOT CONTROL NET</div>
+        <div class="mode-selector">
+            <button id="mode-usb" class="mode-btn active">USB 유선</button>
+            <button id="mode-bt" class="mode-btn">블루투스 (HC-05)</button>
+        </div>
+        <div class="conn-indicator" id="conn-status">DISCONNECTED</div>
+    </div>
+
+    <div class="container">
+        <!-- 메인 컨트롤 영역 -->
+        <div class="control-grid">
+            
+            <!-- 3x3 복합 주행 및 서보 제어 패드 -->
+            <div class="card col-12">
+                <div class="card-title">통합 구동 매트릭스 패드 (DRIVE & SERVO)</div>
+                <div class="matrix-pad-container">
+                    <div class="matrix-pad">
+                        <!-- 1행 -->
+                        <button class="pad-btn servo-btn" id="btn-XCW">S1 ↻<span class="sub-label">(XCW)</span></button>
+                        <button class="pad-btn drive-btn" id="btn-F">▲<span class="sub-label">전진(F)</span></button>
+                        <button class="pad-btn servo-btn" id="btn-XCCW">S1 ↺<span class="sub-label">(XCCW)</span></button>
+
+                        <!-- 2행 -->
+                        <button class="pad-btn drive-btn" id="btn-L">◀<span class="sub-label">좌회전(L)</span></button>
+                        <button class="pad-btn stop-btn" id="btn-S">■<span class="sub-label">정지(S)</span></button>
+                        <button class="pad-btn drive-btn" id="btn-R">▶<span class="sub-label">우회전(R)</span></button>
+
+                        <!-- 3행 -->
+                        <button class="pad-btn servo-btn" id="btn-YCW">S2 ↻<span class="sub-label">(YCW)</span></button>
+                        <button class="pad-btn drive-btn" id="btn-B">▼<span class="sub-label">후진(B)</span></button>
+                        <button class="pad-btn servo-btn" id="btn-YCCW">S2 ↺<span class="sub-label">(YCCW)</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 서보 가상 각도 설정 슬라이더 카드 -->
+            <div class="card col-6">
+                <div class="card-title">서보 1 가상 각도 (YAW)</div>
+                <div class="slider-group">
+                    <input type="range" min="0" max="180" value="90" id="slider-x">
+                    <div class="slider-display"><span id="val-x">90</span>°</div>
+                </div>
+                <button class="action-btn" id="btn-send-x">가상각도 X 명령 전송</button>
+            </div>
+
+            <div class="card col-6">
+                <div class="card-title">서보 2 가상 각도 (PITCH)</div>
+                <div class="slider-group">
+                    <input type="range" min="0" max="180" value="90" id="slider-y">
+                    <div class="slider-display"><span id="val-y">90</span>°</div>
+                </div>
+                <button class="action-btn" id="btn-send-y">가상각도 Y 명령 전송</button>
+            </div>
+
+            <!-- 속도 제어 카드 -->
+            <div class="card col-12">
+                <div class="card-title">주행 속도 제한 파워 설정 (SPEED)</div>
+                <div class="slider-group">
+                    <input type="range" min="100" max="255" value="180" id="slider-speed">
+                    <div class="slider-display"><span id="val-speed">180</span> PWM</div>
+                </div>
+            </div>
+
+            <!-- 터미널 콘솔 로그 -->
+            <div class="card col-12">
+                <div class="card-title">데이터 입출력 시리얼 모니터 터미널</div>
+                <div class="serial-interface">
+                    <button class="conn-btn" id="btn-connect">장치 연결 (CONNECT)</button>
+                    <input type="text" id="cmd-input" class="console-input" placeholder="아두이노 원격 명령 직접 입력...">
+                    <button class="send-btn" id="btn-send-raw">전송</button>
+                </div>
+                <div class="log-viewport" id="terminal-log">
+                    <div class="log-line sys">SYSTEM: 컨트롤러 코어 대기 중. 통신 모드를 선택하고 연결해 주세요.</div>
+                </div>
+                <div class="macro-group">
+                    <button class="macro-btn" data-cmd="P150">속도 150</button>
+                    <button class="macro-btn" data-cmd="P255">속도 최대</button>
+                    <button class="macro-btn" data-cmd="X90">S1 중앙</button>
+                    <button class="macro-btn" data-cmd="Y90">S2 중앙</button>
+                    <button class="macro-btn" data-cmd="Z">서보 전체 정지</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

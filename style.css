@@ -1,0 +1,320 @@
+:root {
+    --bg-color: #0d0d0f;
+    --card-bg: rgba(22, 22, 26, 0.7);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #f5f5f7;
+    --text-secondary: #86868b;
+    --accent-orange: #ff9f0a;
+    --accent-blue: #2997ff;
+    --accent-red: #ff3b30;
+    --accent-green: #30d158;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none; /* 모바일 터치 시 드래그 방지 */
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 시스템 바 상단 고정 */
+.system-bar {
+    width: 100%;
+    height: 54px;
+    background: rgba(13, 13, 15, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
+.system-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--accent-orange);
+}
+
+.mode-selector {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px;
+    border-radius: 8px;
+}
+
+.mode-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.mode-btn.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+}
+
+.conn-indicator {
+    font-size: 10px;
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--accent-red);
+    background: rgba(255, 59, 48, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.conn-indicator.connected {
+    color: var(--accent-green);
+    background: rgba(48, 209, 88, 0.1);
+}
+
+/* 레이아웃 구조 */
+.container {
+    max-width: 800px;
+    width: 100%;
+    margin: 54px auto 0 auto;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.col-6 { grid-column: span 6; }
+.col-12 { grid-column: span 12; }
+
+.card-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+/* 3x3 통합 매트릭스 패드 스타일 */
+.matrix-pad-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.matrix-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 85px);
+    grid-template-rows: repeat(3, 85px);
+    gap: 12px;
+}
+
+.pad-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    color: var(--text-primary);
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.1s, transform 0.1s;
+    position: relative;
+}
+
+.pad-btn .sub-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.pad-btn:active, .pad-btn.active {
+    background: var(--text-primary);
+    color: var(--bg-color);
+    transform: scale(0.94);
+}
+
+.pad-btn:active .sub-label, .pad-btn.active .sub-label {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/* 버튼 기능 그룹별 컬러 스킨 */
+.drive-btn { border-color: rgba(41, 151, 255, 0.2); }
+.drive-btn:active, .drive-btn.active { background: var(--accent-blue); color: #fff;}
+
+.servo-btn { border-color: rgba(255, 159, 10, 0.2); font-size: 16px; }
+.servo-btn:active, .servo-btn.active { background: var(--accent-orange); color: #fff; }
+
+.stop-btn {
+    background: rgba(255, 59, 48, 0.12);
+    border-color: rgba(255, 59, 48, 0.3);
+    color: var(--accent-red);
+}
+.stop-btn:active { background: var(--accent-red); color: #fff; }
+
+/* 슬라이더 스타일 */
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 8px 0;
+}
+
+input[type="range"] {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    cursor: pointer;
+    border: 2px solid var(--bg-color);
+}
+
+.slider-display {
+    font-family: monospace;
+    font-size: 15px;
+    min-width: 60px;
+    text-align: right;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: 0.2s;
+}
+.action-btn:active { background: rgba(255, 255, 255, 0.15); }
+
+/* 터미널 및 콘솔 모니터 인터페이스 */
+.serial-interface {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.conn-btn {
+    background: var(--text-primary);
+    color: var(--bg-color);
+    border: none;
+    padding: 0 14px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.console-input {
+    flex-grow: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 0 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+    -webkit-user-select: text;
+    user-select: text; /* 텍스트 입력창은 예외적으로 활성화 */
+}
+
+.send-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 0 16px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.log-viewport {
+    height: 140px;
+    background: #000;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.6);
+    overflow-y: auto;
+}
+
+.log-line { margin-bottom: 2px; }
+.log-line.tx { color: var(--accent-blue); }
+.log-line.rx { color: var(--accent-green); }
+.log-line.sys { color: var(--text-secondary); }
+.log-line.err { color: var(--accent-red); }
+
+.macro-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.macro-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.macro-btn:active { color: var(--text-primary); background: rgba(255,255,255,0.08); }
